@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <div class="overlay-text" :style="{ top: '57%' }">
+                        <div class="overlay-text" :style="{ top: '53%' }">
                             <h2 v-for="n in cartItem?.max_lines" :key="n">
                                 <span v-if="lines[n - 1]">{{ lines[n - 1] }}</span>
                                 <span v-else><br /></span>

@@ -1,7 +1,6 @@
 .container {
   max-width: ms-auto;
   padding: 94px 0;
-  
 }
 
 .box {
@@ -46,24 +45,26 @@
   top: 50%;
   left: 53%;
   transform: translate(-50%, -50%) rotateY(7deg) skewY(-5.5deg);
-  padding: 10px 20px;
+  padding: 10px 10px;
   color: #cdcac4;
-  font-family: 'Frutiger', sans-serif;
+  font-family: "Frutiger", sans-serif;
   width: 100%;
 }
 
 @font-face {
-  font-family: 'Frutiger';
+  font-family: "Frutiger";
   font-style: normal;
   font-weight: 400;
-  src: local('Frutiger'), url('https://fonts.cdnfonts.com/s/13615/Frutiger.woff') format('woff');
+  src: local("Frutiger"),
+    url("https://fonts.cdnfonts.com/s/13615/Frutiger.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Frutiger';
+  font-family: "Frutiger";
   font-style: normal;
   font-weight: 700;
-  src: local('Frutiger'), url('https://fonts.cdnfonts.com/s/13615/Frutiger_bold.woff') format('woff');
+  src: local("Frutiger"),
+    url("https://fonts.cdnfonts.com/s/13615/Frutiger_bold.woff") format("woff");
 }
 
 .form-select:focus {
@@ -84,7 +85,7 @@
 
 @media print {
   body {
-      background: none !important;
+    background: none !important;
   }
 }
 
@@ -95,37 +96,72 @@ body {
 
 @media (max-width: 320px) {
   .box {
-      margin: 0 15px;
+    margin: 0 15px;
   }
-    .overlay-text {
-      padding: 10px 0px !important;
+  .overlay-text {
+    padding: 10px 0px !important;
   }
 
   .overlay-text p {
-      font-size: x-small !important;
+    font-size: x-small !important;
   }
 
   .overlay-text h2 {
-      font-size: 12px !important;
-      margin: 0 !important;
+    font-size: 12px !important;
+    margin: 0 !important;
   }
-
 }
 
 @media (min-width: 320px) and (max-width: 425px) {
   .box {
-      margin: 0 15px;
+    margin: 0 15px;
   }
   .overlay-text {
-      padding: 10px 0px !important;
+    padding: 10px 0px !important;
   }
 
   .overlay-text p {
-      font-size: small !important;
+    font-size: small !important;
   }
 
   .overlay-text h2 {
-      font-size: 14px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+    background: none !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    /* color: inherit !important; */
   }
 
+  .printable-receipt,
+  .printable-receipt * {
+    visibility: visible !important;
+  }
+
+  .printable-receipt {
+    position: absolute !important;
+    left: 0px !important;
+    top: 0px !important;
+    bottom: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+
+  .overlay-text {
+    color: white !important;
+    background: rgba(0, 0, 0, 0.4);
+    font-weight: bolder;
+  }
+
+  /* .overlay-text {
+    color: white !important;
+
+    font-weight: lighter;
+    -webkit-text-stroke: 1px rgb(255, 255, 255); 
+  } */
 }

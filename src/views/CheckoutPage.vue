@@ -35,13 +35,13 @@
                                             </div>
                                         </div>
                                         <div v-else>
-                                            <!-- <div class="overlay-text" :style="{ top: '57%' }">
+                                            <!-- <div class="overlay-text" :style="{ top: '53%' }">
                                                 <p class="m-0" v-for="n in item.max_lines" :key="n">
                                                     <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                                     <span v-else>&nbsp;</span>
                                                 </p>
                                             </div> -->
-                                            <div class="overlay-text" :style="{ top: item.productDescription === '8x8 Additional McCovey Keepsake Brick' ? '60%' : '57%' }">
+                                            <div class="overlay-text" :style="{ top: item.productDescription === '8x8 Additional McCovey Keepsake Brick' ? '60%' : '53%' }">
                                                 <p class="m-0" v-for="n in item.max_lines" :key="n">
                                                     <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                                     <span v-else>&nbsp;</span>
@@ -565,7 +565,7 @@
                                                 </div>
                                             </div>
                                             <div v-else>
-                                                <div class="overlay-text" :style="{ top: '57%' }">
+                                                <div class="overlay-text" :style="{ top: '53%' }">
                                                     <p class="m-0 overlay-custom-text" v-for="n in item.max_lines"
                                                         :key="n">
                                                         <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>

@@ -3,6 +3,7 @@
         <div class="box">
             <div class="header pb-4 header-font">
                 <h2 class="m-0">{{ shopPageData.header_text }}</h2>
+             
                 <!-- <i class="bi bi-info-circle fs-4" data-bs-toggle="modal" data-bs-target="#infoModal"
                     style="cursor: pointer;"></i> -->
             </div>
@@ -87,6 +88,7 @@ export default {
         const themeData = computed(() => campaignStore.themeData);
         const shopPageData = computed(() => campaignStore.shopPageData);
         const productData = computed(() => campaignStore.productData);
+
 
         function getProductImage(product) {
             return product.item_image_default
