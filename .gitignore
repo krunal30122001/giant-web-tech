@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# Vite and build files
+dist/
+.vite/
+
+# IDE-specific files (e.g., VSCode, JetBrains)
+.vscode/
+.idea/
+
+# macOS-specific files
+.DS_Store

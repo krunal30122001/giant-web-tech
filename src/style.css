@@ -1,0 +1,131 @@
+.container {
+  max-width: ms-auto;
+  padding: 94px 0;
+  
+}
+
+.box {
+  padding: 30px;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.79);
+  background-color: hsla(0, 0%, 100%, 0.95);
+}
+
+.header-font {
+  font-family: var(--header-font-style);
+}
+
+.sub-header-font {
+  font-family: var(--sub-header-font-style);
+}
+
+.btn {
+  background-color: var(--button-color);
+  color: var(--button-title-color);
+  font-family: var(--button-font-family);
+  padding: 7px 35px;
+  border-radius: 0;
+}
+
+.btn:hover {
+  background-color: var(--button-hover-color);
+}
+
+.overlay-section {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.overlay-image {
+  width: 100%;
+  height: auto;
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 53%;
+  transform: translate(-50%, -50%) rotateY(7deg) skewY(-5.5deg);
+  padding: 10px 20px;
+  color: #cdcac4;
+  font-family: 'Frutiger', sans-serif;
+  width: 100%;
+}
+
+@font-face {
+  font-family: 'Frutiger';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Frutiger'), url('https://fonts.cdnfonts.com/s/13615/Frutiger.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Frutiger';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Frutiger'), url('https://fonts.cdnfonts.com/s/13615/Frutiger_bold.woff') format('woff');
+}
+
+.form-select:focus {
+  outline: none;
+  box-shadow: 0 0 5px 2px rgba(93, 93, 93, 0.5);
+}
+
+.shadow:focus {
+  box-shadow: 0 0 5px 2px rgba(255, 123, 123, 0.5) !important;
+}
+
+.error-m {
+  margin-top: -15px;
+  margin-bottom: 5px;
+  color: red;
+  font-size: medium;
+}
+
+@media print {
+  body {
+      background: none !important;
+  }
+}
+
+body {
+  /* padding-top: 40px; */
+  padding-bottom: 0px;
+}
+
+@media (max-width: 320px) {
+  .box {
+      margin: 0 15px;
+  }
+    .overlay-text {
+      padding: 10px 0px !important;
+  }
+
+  .overlay-text p {
+      font-size: x-small !important;
+  }
+
+  .overlay-text h2 {
+      font-size: 12px !important;
+      margin: 0 !important;
+  }
+
+}
+
+@media (min-width: 320px) and (max-width: 425px) {
+  .box {
+      margin: 0 15px;
+  }
+  .overlay-text {
+      padding: 10px 0px !important;
+  }
+
+  .overlay-text p {
+      font-size: small !important;
+  }
+
+  .overlay-text h2 {
+      font-size: 14px !important;
+  }
+
+}
