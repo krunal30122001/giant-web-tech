@@ -34,8 +34,9 @@
                 <div class="col-lg-7 col-12 align-self-center overlay-section">
                     <img :src="selectedProductImage" alt="Product Image" class="img-fluid overlay-image" />
                     <div v-if="isLogoAllowed && product?.description?.toLowerCase().includes('logo')">
+                  
                         <div class="overlay-text" :style="{ top: isLogoAllowed ? '70%' : '50%' }">
-                            <h2 v-for="n in product?.max_lines" :key="n">
+                            <h2 v-for="n in product?.max_lines" :key="n" >
                                 <span v-if="brickInscriptionLines[n - 1]">{{ brickInscriptionLines[n - 1] }}</span>
                                 <span v-else><br /></span>
                             </h2>
@@ -43,7 +44,7 @@
                     </div>
                     <div v-else>
                         <div class="overlay-text">
-                            <h2 v-for="n in product?.max_lines" :key="n">
+                            <h2 v-for="n in product?.max_lines" :key="n" >
                                 <span v-if="brickInscriptionLines[n - 1]">{{ brickInscriptionLines[n - 1] }}</span>
                                 <span v-else><br /></span>
                             </h2>
@@ -165,14 +166,17 @@
                     <div v-for="child in product.children" :key="child.item_id"
                         class="product-card col-md-4 col-12 p-3 d-flex">
                         <div class="w-100 d-flex flex-column h-100">
+                           
                             <div class="d-flex flex-column flex-grow-1 justify-content-end">
                                 <div class="overlay-section">
                                     <img :src="selectedChildProductImage(child)" class="img-fluid overlay-image"
                                         :alt="child.description" />
                                     <!-- <div v-if="isLogoAllowed && logoOptions.length"> -->
                                     <div v-if="isLogoAllowed && product?.description?.toLowerCase().includes('logo')">
+                                   
                                         <div class="overlay-text" :style="{ top: isLogoAllowed ? '70%' : '50%' }">
-                                            <p class="m-0 fw-bold" v-if="child.item_type_description !== 'Display Case'"
+                                            <p class="m-0 fw-bold" 
+                                                :class="{ 'is-max': product?.max_characters > 16 }"   v-if="child.item_type_description !== 'Display Case'"
                                                 v-for="n in product.max_lines" :key="n">
                                                 <span v-if="brickInscriptionLines[n - 1]">
                                                     {{ brickInscriptionLines[n - 1] }}
@@ -183,7 +187,7 @@
                                     </div>
                                     <div v-else>
                                         <div class="overlay-text">
-                                            <p class="m-0 fw-bold" v-if="child.item_type_description !== 'Display Case'"
+                                            <p class="m-0 fw-bold"  :class="{ 'is-max': product?.max_characters > 16 }"   v-if="child.item_type_description !== 'Display Case'"
                                                 v-for="n in product.max_lines" :key="n">
                                                 <span v-if="brickInscriptionLines[n - 1]">
                                                     {{ brickInscriptionLines[n - 1] }}
@@ -435,7 +439,12 @@ input:focus {
     outline: none;
     box-shadow: 0 0 5px 2px rgba(93, 93, 93, 0.5);
 }
-
+@media (min-width: 320px) { 
+    .overlay-text h2 {
+    font-size: 12px !important;
+    margin: 0 !important;
+  }
+}
 @media (max-width: 320px) {
     .box {
         margin: 0 15px;
@@ -446,7 +455,8 @@ input:focus {
     }
 
     .overlay-text h2 {
-        font-size: x-small !important;
+        font-size: 10px !important;
+        margin: 0 !important;
     }
 }
 
@@ -460,8 +470,11 @@ input:focus {
     }
 
     .overlay-text h2 {
-        font-size: small !important;
+        font-size: 11px !important;
     }
+    .overlay-text p.is-max {
+    font-size: 10px !important;
+  }
 }
 
 @media (min-width: 426px) and (max-width: 575px) {
@@ -472,9 +485,12 @@ input:focus {
     .overlay-text p {
         font-size: medium !important;
     }
+    .overlay-text p.is-max {
+    font-size: 12px !important;
+  }
 
     .overlay-text h2 {
-        font-size: medium !important;
+        font-size: 14px !important;
     }
 }
 
@@ -502,7 +518,7 @@ input:focus {
     }
 
     .overlay-text p {
-        font-size: xx-small !important;
+        font-size: 8px !important;
     }
 }
 
@@ -524,5 +540,19 @@ input:focus {
     .overlay-text p {
         font-size: small !important;
     }
+}
+
+@media (min-width: 1401px) {
+    .overlay-text h2 {
+        font-size: xx-large !important;
+    }
+
+    .overlay-text p {
+        font-size: large !important;
+    }
+
+    .overlay-text p.is-max {
+    font-size: 14px !important;
+  }
 }
 </style>

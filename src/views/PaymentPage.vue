@@ -29,7 +29,7 @@
                                             class="img-fluid w-100 overlay-image">
                                         <div v-if="isLogoAllowed && item?.productDescription?.toLowerCase().includes('logo')">
                                             <div class="overlay-text" :style="{ top: '70%' }">
-                                                <p class="m-0" v-for="n in item.max_lines" :key="n">
+                                                <p class="m-0" v-for="n in item.max_lines" :key="n" :class="{ 'is-max': item?.max_characters > 16 }">
                                                     <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                                     <span v-else>&nbsp;</span>
                                                 </p>
@@ -37,7 +37,7 @@
                                         </div>
                                         <div v-else>
                                             <div class="overlay-text" :style="{ top: '50%' }">
-                                                <p class="m-0" v-for="n in item.max_lines" :key="n">
+                                                <p class="m-0" v-for="n in item.max_lines" :key="n" :class="{ 'is-max': item?.max_characters > 16 }">
                                                     <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                                     <span v-else>&nbsp;</span>
                                                 </p>
@@ -638,7 +638,9 @@ input:focus,
     .overlay-text p {
         font-size: small !important;
     }
-
+    .overlay-text p.is-max {
+    font-size: 10px !important;
+  }
     .no-border-end {
         border-right: none !important;
     }
@@ -661,6 +663,9 @@ input:focus,
     .overlay-text p {
         font-size: large !important;
     }
+    .overlay-text p.is-max {
+    font-size: 15px !important;
+  }
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
@@ -683,25 +688,37 @@ input:focus,
     }
 
     .overlay-text p {
-        font-size: xx-small !important;
+        font-size: 10px !important;
     }
+    .overlay-text p.is-max {
+    font-size: 9px !important;
+  }
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
     .overlay-text p {
-        font-size: 5px !important;
+        font-size: 6px !important;
     }
+    .overlay-text p.is-max {
+    font-size: 5px !important;
+  }
 }
 
 @media (min-width: 1201px) and (max-width: 1400px) {
     .overlay-text p {
-        font-size: 7px !important;
+        font-size: 8px !important;
     }
+    .overlay-text p.is-max {
+    font-size: 7px !important;
+  }
 }
 
 @media (min-width: 1401px) {
     .overlay-text p {
-        font-size: 8px !important;
+        font-size: 9px !important;
     }
+    .overlay-text p.is-max {
+    font-size: 8px !important;
+  }
 }
 </style>

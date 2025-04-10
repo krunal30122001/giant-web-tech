@@ -91,8 +91,8 @@
                         <div class="prod-container overlay-section">
                             <img :src="item.logo_image" class="img-fluid w-100 overlay-image bg-transparent" alt="Product">
                             <div v-if="isLogoAllowed && item?.productDescription?.toLowerCase().includes('logo')">
-                                <div class="overlay-text" :style="{ top: '75%' }">
-                                    <p class="m-0" v-for="n in item.max_lines" :key="n">
+                                <div class="overlay-text" :style="{ top: '70%' }">
+                                    <p class="m-0" :class="{ 'is-max': item?.max_characters > 16 }" v-for="n in item.max_lines" :key="n">
                                         <span v-if="item.lines?.[n - 1]">{{ item.lines[n - 1] }}</span>
                                         <span v-else>&nbsp;</span>
                                     </p>
@@ -100,7 +100,7 @@
                             </div>
                             <div v-else>
                                 <div class="overlay-text" :style="{ top: '50%' }">
-                                    <p class="m-0" v-for="n in item.max_lines" :key="n">
+                                    <p class="m-0" :class="{ 'is-max': item?.max_characters > 16 }" v-for="n in item.max_lines" :key="n">
                                         <span v-if="item.lines?.[n - 1]">{{ item.lines[n - 1] }}</span>
                                         <span v-else>&nbsp;</span>
                                     </p>
@@ -582,6 +582,9 @@ table {
     .overlay-text p {
         font-size: x-small !important;
     }
+    .overlay-text p.is-max {
+    font-size: x-small !important;
+  }
 }
 
 @media (min-width: 321px) and (max-width: 425px) {
@@ -596,6 +599,9 @@ table {
     .overlay-text p {
         font-size: small !important;
     }
+    .overlay-text p.is-max {
+    font-size: small !important;
+  }
 }
 
 @media (min-width: 426px) and (max-width: 575px) {
@@ -608,8 +614,11 @@ table {
     }
 
     .overlay-text p {
-        font-size: large;
+        font-size: large !important;
     }
+    .overlay-text p.is-max {
+    font-size: large !important;
+  }
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
@@ -620,6 +629,9 @@ table {
     .overlay-text p {
         font-size: large !important;
     }
+    .overlay-text p.is-max {
+    font-size: large !important;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -633,8 +645,11 @@ table {
     }
 
     .overlay-text p {
-        font-size: 6px;
+        font-size: 6px !important;
     }
+    .overlay-text p.is-max {
+    font-size: 6px !important;
+  }
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
@@ -642,17 +657,26 @@ table {
     .overlay-text p {
         font-size: xx-small !important;
     }
+    .overlay-text p.is-max {
+    font-size: xx-small !important;
+  }
 }
 
 @media (min-width: 1201px) and (max-width: 1400px) {
     .overlay-text p {
         font-size: x-small !important;
     }
+    .overlay-text p.is-max {
+    font-size: small !important;
+  }
 }
 
 @media (min-width: 1401px) {
     .overlay-text p {
         font-size: small !important;
     }
+    .overlay-text p.is-max {
+    font-size: small !important;
+  }
 }
 </style>

@@ -104,6 +104,10 @@ body {
   .overlay-text p {
     font-size: 11px !important;
   }
+  /* .overlay-text h2 {
+    font-size: 12px !important;
+    margin: 0 !important;
+  } */
 }
 /* @media (max-width: 320px) {
   .box {
@@ -134,3 +138,36 @@ body {
     font-size: 14px !important;
   }
 } */
+
+@media print {
+  body * {
+    visibility: hidden !important;
+    background: none !important;
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+
+  .printable-receipt,
+  .printable-receipt * {
+    visibility: visible !important;
+  }
+
+  .printable-receipt {
+    position: absolute !important;
+    left: 0px !important;
+    top: 0px !important;
+    bottom: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: inherit !important;
+  }
+
+  .overlay-text {
+    font-weight: bolder;
+  }
+}
