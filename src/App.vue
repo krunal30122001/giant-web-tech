@@ -3,24 +3,21 @@
         <div v-if="isLoading" class="loader-container">
             <div class="loader"></div>
             <p class="loading-text">Loading campaign data...</p>
-        </div>
-        <div v-else>
-            <div v-if="verified" class="layout">
-                <Header />
-                <main class="contentLayout">
-                    <router-view />
-                </main>
+        </div>        
+        <div v-else>  
+            <div v-if="verified"> 
+                <Header />            
+                <router-view />
                 <Footer />
             </div>
 
             <div v-else class="container-md">
-                <div class="c-box">
+                <div class="c-box">    
                     <div class="content">
                         <form @submit.prevent="checkCodeInput">
                             <div class="form-group row pt-2">
                                 <div class="col-12 m-0 align-self-center">
-                                    <label class="fw-bold"><span class="text-danger">*</span> Please enter your Giants
-                                        Brick Program access code</label>
+                                    <label class="fw-bold"><span class="text-danger">*</span> Please enter your U.S. Soccer Brick Program access code</label>
                                     <input v-model="formData.code" id="form_code" type="text" name="code"
                                         :class="['form-control', 'rounded-0', 'bg-transparent', 'mt-2', errorClass('code')]"
                                         placeholder="Enter Code" @input="clearError('code')" />
@@ -33,7 +30,7 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div>                 
         </div>
     </div>
 </template>
@@ -44,6 +41,8 @@ import Footer from '@/components/Footer.vue';
 import { useCampaignStore } from '@/store/campaign';
 import { ref, computed, onMounted, watch } from 'vue';
 import { setButtonStyles, setBoxStyles } from '@/utils/buttonStyles';
+import { useCookies } from 'vue3-cookies';
+const { cookies } = useCookies();
 
 export default {
     name: 'App',
@@ -62,11 +61,16 @@ export default {
         const errors = ref({});
 
         onMounted(async () => {
-            console.log(`App running in ${appMode} mode for campaign: ${campaignName}`);
+            // console.log(`App running in ${appMode} mode for campaign: ${campaignName}`);
             await campaignStore.loadCampaignData(campaignName);
             setButtonStyles(themeData.value?.general_information);
             setBoxStyles(homePageData.value);
 
+            const storedData = sessionStorage.getItem('verifiedCode');
+
+            if (storedData) {
+                verified.value = true;
+            }
             // Watch for changes in generalInfo and update body styles and favicon accordingly.
             watch(
                 generalInfo,
@@ -78,35 +82,30 @@ export default {
         });
 
         async function checkCodeInput() {
-            if (validateForm()) {
-                try {
-                    if (formData.value.code == 'GIANTS2025') {
-                        verified.value = true;
-                    } else {
-                        errors.value.code = 'Invalid code';
+            if (validateForm()) {                
+                try {     
+                    const response = await campaignStore.checkCode(formData.value.code);                                                          
+                    if (response.status == "success") {
+                        verified.value = true;  
+                        // Store response in session storage
+                        sessionStorage.setItem('verifiedCode', JSON.stringify(response));
+                        cookies.set('verifiedCode', response, '1d');                      
+                    } else {                                            
+                        errors.value.code = response.message || 'Invalid code';
                     }
-                    // const response = await campaignStore.checkCode(formData.value.code);                                                          
-                    // if (response.status == "success") {
-                    //     verified.value = true;  
-                    //     // Store response in session storage
-                    //     sessionStorage.setItem('verifiedCode', JSON.stringify(response));
-                    //     cookies.set('verifiedCode', response, '1d');                      
-                    // } else {                                            
-                    //     errors.value.code = response.message || 'Invalid code';
-                    // }
                 } catch (error) {
                     errors.value.code = 'Error verifying the code. Please try again.';
                 }
             }
         }
-
+        
         function validateForm() {
             errors.value = {};
 
             // Validate First Name
             if (!formData.value.code) {
                 errors.value.code = 'Code is required';
-            }
+            }        
             // Return true if no errors, otherwise false
             return Object.keys(errors.value).length === 0;
         }
@@ -159,7 +158,7 @@ export default {
             link.href = faviconUrl || 'favicon.ico';
 
             // Update the page title with a fallback to a default value.
-            document.title = siteName || 'Default Site Name';
+            document.title = siteName || 'U.S. Soccer Brick Program';
         }
 
         function createFaviconLink() {
@@ -171,7 +170,7 @@ export default {
 
         function resetPageAppearance() {
             setBodyBackground('');
-            setFaviconAndTitle('', 'Default Site Name');
+            setFaviconAndTitle('', 'U.S. Soccer Brick Program');
         }
 
         watch(isLoading, (loading) => {
@@ -184,17 +183,6 @@ export default {
 </script>
 
 <style scoped>
-.layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-}
-
-.contentLayout {
-    flex: 1;
-    padding-top: 156px;
-}
-
 .container-md {
     max-width: 700px;
     height: 100vh;
@@ -205,9 +193,9 @@ export default {
 
 .c-box {
     position: relative;
-    padding: 50px 30px 50px 30px;
+    padding: 50px 30px 50px 30px;    
     border: 8px solid #fff;
-    box-shadow: 0 0 18px rgba(0, 0, 0, 0.79);
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.79);    
 }
 
 .c-box::before {
@@ -221,7 +209,7 @@ export default {
     opacity: calc(var(--box-opacity) / 100);
     z-index: 0;
 }
-
+/* Loader Styles */
 .loader-container {
     position: fixed;
     inset: 0;
@@ -231,6 +219,10 @@ export default {
     justify-content: center;
     align-items: center;
     z-index: 9999;
+}
+.content {
+    position: relative;
+    z-index: 1;
 }
 
 .loader {
@@ -257,22 +249,5 @@ export default {
 
 body.loading {
     overflow: hidden;
-}
-
-html,
-body {
-    height: 100%;
-    margin: 0;
-}
-
-#app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.content {
-    position: relative;
-    z-index: 1;
 }
 </style>

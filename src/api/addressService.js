@@ -14,6 +14,7 @@ export async function validateAddressAPI(address) {
 export async function OrderInvoiceAPI(prepareResponse) {
     try {
         const response = await apiClient.post('/order/invoice/avalara', prepareResponse);
+        console.log("OrderInvoiceAPI response1:", response);
         // const response = await apiClient.post('/order/invoicefree', prepareResponse);
         return response.data; // Return the response data
     } catch (error) {

@@ -34,7 +34,7 @@
                 <div class="col-lg-7 col-12 align-self-center overlay-section">
                     <img :src="selectedProductImage" alt="Product Image" class="img-fluid overlay-image" />
                     <div v-if="isLogoAllowed && product?.description?.toLowerCase().includes('logo')">
-                        <div class="overlay-text" :style="{ top: isLogoAllowed ? '75%' : '50%' }">
+                        <div class="overlay-text" :style="{ top: isLogoAllowed ? '70%' : '50%' }">
                             <h2 v-for="n in product?.max_lines" :key="n">
                                 <span v-if="brickInscriptionLines[n - 1]">{{ brickInscriptionLines[n - 1] }}</span>
                                 <span v-else><br /></span>
@@ -55,7 +55,6 @@
                     <h5 class="fw-bold pt-3 sub-header-font">{{ product.description }}</h5>
                     <p>{{ formatPrice(product.price) }}</p>
                     <hr>
-                    <p>*Please enter the inscription of your McCovey brick as closely as possible. The replica will be engraved with your original inscription.</p>
                     <h5 class="fw-bold sub-header-font">Brick Inscription:</h5>
                     <div class="form">
                         <div v-for="line in product.max_lines" :key="line" class="form-group row pt-2">
@@ -168,9 +167,11 @@
                         <div class="w-100 d-flex flex-column h-100">
                             <div class="d-flex flex-column flex-grow-1 justify-content-end">
                                 <div class="overlay-section">
-                                    <img :src="selectedChildProductImage(child)" class="img-fluid overlay-image" :alt="child.description" />
+                                    <img :src="selectedChildProductImage(child)" class="img-fluid overlay-image"
+                                        :alt="child.description" />
+                                    <!-- <div v-if="isLogoAllowed && logoOptions.length"> -->
                                     <div v-if="isLogoAllowed && product?.description?.toLowerCase().includes('logo')">
-                                        <div class="overlay-text" :style="{ top: isLogoAllowed ? '75%' : '50%' }">
+                                        <div class="overlay-text" :style="{ top: isLogoAllowed ? '70%' : '50%' }">
                                             <p class="m-0 fw-bold" v-if="child.item_type_description !== 'Display Case'"
                                                 v-for="n in product.max_lines" :key="n">
                                                 <span v-if="brickInscriptionLines[n - 1]">
@@ -249,13 +250,13 @@ export default {
 
         const getProductImage = (product) => {
             return product.value?.item_image_blank
-                ? `https://forms.bricksrus.tech/images/${product.value.item_image_blank}`
+                ? `https://vortexforms.com/images/${product.value.item_image_blank}`
                 : 'https://placehold.co/200x100';
         };
 
         const getChildProductImage = (child) => {
             return child.item_image_default
-                ? `https://forms.bricksrus.tech/images/${child.item_image_default}`
+                ? `https://vortexforms.com/images/${child.item_image_default}`
                 : 'https://placehold.co/200x100';
         };
 
@@ -320,9 +321,6 @@ export default {
         });
 
         const selectedChildProductImage = (child) => {
-            if (child.description === "8x8 Additional McCovey Keepsake Brick") {
-                return getChildProductImage(child);
-            }
             const selectedLogo = logoOptions.value.find(
                 (logo) => logo.item_number === selectedOption.value
             );
@@ -423,7 +421,7 @@ export default {
                 }, {}),
             };
             // console.log("Cart Item Data:", JSON.stringify(cartItem, null, 2));
-            // console.log("Cart Store Function:", this.cartStore.addItem); // Check if addItem exists
+            console.log("Cart Store Function:", this.cartStore.addItem); // Check if addItem exists
 
             this.cartStore.addItem(cartItem);
             this.$router.push('/cart');
@@ -442,49 +440,28 @@ input:focus {
     .box {
         margin: 0 15px;
     }
-      .overlay-text {
-        padding: 10px 0px !important;
-    }
 
     .overlay-text p {
         font-size: x-small !important;
     }
 
     .overlay-text h2 {
-        font-size: 12px !important;
-        margin: 0 !important;
-    }
-    /* .overlay-text p {
         font-size: x-small !important;
     }
-
-    .overlay-text h2 {
-        font-size: x-small !important;
-    } */
 }
 
-@media (min-width: 320px) and (max-width: 425px) {
+@media (min-width: 321px) and (max-width: 425px) {
     .box {
         margin: 0 15px;
     }
-    .overlay-text {
-        padding: 10px 0px !important;
-    }
 
     .overlay-text p {
         font-size: small !important;
     }
 
     .overlay-text h2 {
-        font-size: 14px !important;
+        font-size: small !important;
     }
-    /* .overlay-text p {
-        font-size: small !important;
-    } */
-
-    /* .overlay-text h2 {
-        font-size: small !important;
-    } */
 }
 
 @media (min-width: 426px) and (max-width: 575px) {

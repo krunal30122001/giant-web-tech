@@ -17,17 +17,14 @@
                     </div>
                 </div>
                 <!-- Product List -->
-              
                 <div v-for="item in cartItems" :key="item.item_id" class="row pt-3">                   
                     <!-- Product Image -->
                     <div class="col-md-3">
-                      
                         <div class="border-bottom border-dark mb-3 py-2 d-block d-md-none fw-medium">PRODUCT</div>
                         <div class="prod-container overlay-section">
-                            <img :src="item.logo_image" class="img-fluid w-100 overlay-image" alt="Product">
-                            
+                            <img :src="item.logo_image" class="img-fluid w-100 overlay-image" alt="Product">                                
                             <div v-if="isLogoAllowed && item?.productDescription?.toLowerCase().includes('logo')">
-                                <div class="overlay-text" :style="{ top: '75%' }">
+                                <div class="overlay-text" :style="{ top: '70%' }">
                                     <p class="m-0" v-for="n in item.max_lines" :key="n">
                                         <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                         <span v-else>&nbsp;</span>
@@ -51,20 +48,20 @@
                             <div class="col-sm-3 col-3 text-center custom-title fw-medium">QUANTITY</div>
                             <div class="col-sm-3 col-3 text-end custom-title fw-medium">SUBTOTAL</div>
                         </div>
-                   
-                        <div class="row mb-2" v-if="item?.item_id != Object.keys(item?.children)[0]">
+
+                        <div class="row mb-2">
                             <div class="col-6">
                                 <strong>{{ item.productDescription }}</strong><br />
-                                Price: {{ formatPrice(item.productPrice) }}
+                                Price: {{ item.item_id === 100145 ? formatPrice(item.donationPrice) : formatPrice(item.productPrice) }}
                             </div>
                             <div class="col-3 text-center">
                                 <span>{{ item.qty }}</span>
                             </div>
                             <div class="col-3 text-end">
-                                <strong>{{ formatPrice(item.qty * item.productPrice) }}</strong>
+                                <strong>{{ item.item_id === 100145 ? formatPrice(item.qty * item.donationPrice) : formatPrice(item.qty * item.productPrice) }}</strong>
                             </div>
                         </div>
-  
+
                         <div class="row mb-2" v-for="child in item.childItems" :key="child.itemId">
                             <div class="col-6">
                                 <strong>{{ child.itemDescription }}</strong><br />
@@ -136,9 +133,35 @@
 
                 <!-- Additional Information -->
                 <div class="mb-3">
-                    <div class="row mb-2">
-                        <label for="aboutTheProgram" class="col-md-5 mt-3 mt-md-0">How did you hear about the program?</label>
-                        <div class="col-md-7 mt-2 mt-md-0">
+                   <!-- Email Field -->
+                   <div class="row mb-2 col-md-8">
+                        <label for="emailAssociated" class="col-md-12">Please enter the email associated with your Insiders account. If you do not have an Insiders account or want to learn more, please visit
+                            <a href="https://www.ussoccer.com/insiders" target="_blank" class="text-dark">ussoccer.com/insiders</a>.</label>
+                        <div class="col-md-12 mt-2">                            
+                            <input v-model="email_associated" type="email" id="email_associated"
+                                    name="email_associated" placeholder="Email"
+                                    :class="['form-control', 'rounded-0', 'bg-transparent', errorClass('email_associated')]"
+                                    @input="clearError('email_associated')" />
+                        </div>
+                    </div>
+                    
+                    <!-- Donating Option Field -->
+                    <div class="row mb-2 col-md-8">
+                        <label for="donating" class="col-md-12 mt-3">Are you interested in learning more about donating to U.S. Soccer? (Yes/No)</label>
+                        <div class="col-md-12 mt-2">
+                            <select id="donating" name="donating"
+                                class="form-select rounded-0 bg-transparent" :class="errorClass('selectedDonatingOption')"
+                                v-model="selectedDonatingOption" @change="clearError('selectedDonatingOption')">
+                                <option value="">-- Please select an option --</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2 col-md-8">
+                        <label for="aboutTheProgram" class="col-md-12 mt-3">How did you hear about the program?</label>
+                        <div class="col-md-12 mt-2">
                             <select id="aboutTheProgram" name="aboutTheProgram"
                                 class="form-select rounded-0 bg-transparent" :class="errorClass('selectedOption')"
                                 v-model="selectedOption" @change="clearError('selectedOption')">
@@ -152,8 +175,8 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label class="col-md-5 mt-3 mt-md-0">I am buying as a:</label>
-                        <div class="col-md-7 mt-2 mt-md-0">
+                        <label class="col-md-12 mt-3">I am buying as a:</label>
+                        <div class="col-md-12 mt-2">
                             <div class="row">
                                 <!-- First Column -->
                                 <div class="col-sm-6">
@@ -189,45 +212,11 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="container"> -->
-                    <div class="row mb-3" v-if="additionField && additionField.length > 0">
-                        <div v-for="field in additionField" :key="field.id" class="row align-items-center mb-3">
-                            <!-- Label -->
-                            <label :for="field.label" class="col-md-5 mt-3 mt-md-0">{{ field.label }}</label>
-
-                            <!-- Dropdown -->
-                            <div class="col-md-7" v-if="field.type === 'dropdown'">
-                                <select v-model="selectedAdditionOption" class="form-control">
-                                    <option value="">-- Please select an option --</option>
-                                    <option v-for="option in JSON.parse(field.options)" :key="option" :value="option">
-                                        {{ option }}
-                                    </option>
-                                </select>
-                                <input v-if="selectedAdditionOption === 'Other'" type="text" v-model="otherValue" class="form-control mt-2" />
-                            </div>
-
-                            <!-- Checkbox Group -->
-                            <div class="col-md-7 d-flex flex-wrap" v-if="field.type === 'checkbox'">
-                                <div v-for="option in JSON.parse(field.options)" :key="option" class="form-check me-3">
-                                    <input class="form-check-input" type="checkbox" :id="option" :value="option" v-model="selectedCheckboxes" />
-                                    <label class="form-check-label col-md-5 mt-3 mt-md-0" :for="option">{{ option }}</label>
-                                </div>
-                            </div>
-
-                            <!-- Text Input -->
-                            <div class="col-md-7" v-if="field.type === 'text'">
-                                <input type="text" v-model="otherTextValue" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- </div> -->
-
-
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="row">
+                <p>To make an additional donation to U.S. Soccer, please <router-link :to="{ name: 'Donation'} ">Click Here</router-link> </p>
+                <!-- Action Buttons --> 
+                <div class="row mt-5">
                     <div class="col-md-6 col-sm-6 col-12">
                         <router-link class="btn" to="/shop">Continue Shopping</router-link>
                     </div>
@@ -257,14 +246,9 @@ export default {
         const campaignStore = useCampaignStore();
         const cartStore = useCartStore();
         const router = useRouter();
-        
         const shoppingCartPages = computed(() => campaignStore.shoppingCartPages);
         const isLogoAllowed = computed(() => campaignStore.multilogoAllowed);
 
-        const campaign = computed(() => campaignStore.campaign);
-        const campaigname = campaign.value.short_url;
-        
-        const additionField = computed(() => campaignStore.additionField);
         // Parsed buying options and splitting them into two columns
         const parsedBuyingOptions = computed(() => {
             return shoppingCartPages.value?.am_buying_as || [];
@@ -288,11 +272,11 @@ export default {
         const subTotal = computed(() => parseFloat(cartStore.subTotal).toFixed(2));
 
         // Validation and error handling
+        const email_associated = ref('');
+        // const member_organizations = ref('');
+        const selectedDonatingOption = ref('');
         const selectedOption = ref('');
-        const selectedAdditionOption = ref('');
         const selectedBuyingAs = ref([]);
-        const otherTextValue = ref([]);
-        const otherValue = ref('');
 
         const errors = ref({});
 
@@ -308,17 +292,20 @@ export default {
                 delete errors.value[field];
             }
         };
-            
+        
         onMounted(() => {
+            email_associated.value = cartStore.marketing.emailAssociated || '';
+            selectedDonatingOption.value = cartStore.marketing.donatingOption || '';
             selectedOption.value = cartStore.marketing.how_you_heard || '';
             selectedBuyingAs.value = cartStore.marketing.buying_as || [];
-            selectedAdditionOption.value = cartStore.marketing.addition_options || '';
-            otherTextValue.value = cartStore.marketing.unlim_id_number || '';
-            otherValue.value = cartStore.marketing.other_value || '';
         });
 
         const validateAndProceedToCheckout = () => {
             errors.value = {}; // Reset errors
+
+            if (!selectedDonatingOption.value) {
+                errors.value.selectedDonatingOption = 'Please select an option for donating.';
+            }
             if (!selectedOption.value) {
                 errors.value.selectedOption = 'Please select an option.';
             }
@@ -327,12 +314,12 @@ export default {
                 alert('Your cart is empty!');
             } else if (Object.keys(errors.value).length === 0) {
                 cartStore.updateMarketingData({
+                    emailAssociated: email_associated.value,
+                    donatingOption: selectedDonatingOption.value,
                     how_you_heard: selectedOption.value,
                     buying_as: selectedBuyingAs.value,
-                    affiliate_code: "",
-                    addition_options: selectedAdditionOption.value,
-                    unlim_id_number: otherTextValue.value,
-                    other_value : otherValue.value,
+                    partner_code: `${email_associated.value} | ${selectedDonatingOption.value}`, // Concatenating values
+                    affiliate_code: ""
                 });
                 router.push('/checkout'); // Navigate to checkout page
             }
@@ -347,25 +334,13 @@ export default {
         };
 
         const decreaseQuantity = (item, child) => {
-    if (child) {
-        const currentQty = item.children[child.itemId] || 0;
-        
-        if (item?.item_id === child?.itemId && currentQty <= 1) {
-            return; // Prevent decreasing if they match and qty is 1
-        }
-        
-        cartStore.updateChildQuantity(
-            item.temp_id, 
-            child.itemId, 
-            Math.max(currentQty - 1, 0)
-        );
-    } else {
-        cartStore.updateItemQuantity(
-            item.temp_id, 
-            Math.max(item.qty - 1, 0)
-        );
-    }
-};
+            if (child) {
+                cartStore.updateChildQuantity(item.temp_id, child.itemId, Math.max((item.children[child.itemId] || 0) - 1, 0));
+            } else {
+                cartStore.updateItemQuantity(item.temp_id, Math.max(item.qty - 1, 0));
+            }
+        };
+
         const itemToRemove = ref(null);
         const openRemoveModal = (temp_id) => {
             itemToRemove.value = temp_id;
@@ -390,10 +365,11 @@ export default {
             aboutTheProgramOptions,
             cartItems,
             subTotal,
+            email_associated,
+            // member_organizations,
+            isLogoAllowed,
+            selectedDonatingOption,
             selectedOption,
-            selectedAdditionOption,
-            otherTextValue,
-            otherValue,
             selectedBuyingAs,
             errors,
             formatPrice,
@@ -403,9 +379,6 @@ export default {
             decreaseQuantity,
             validateAndProceedToCheckout,
             openRemoveModal,
-            isLogoAllowed,
-            additionField,
-            campaigname,
             deleteItem
         };
     },

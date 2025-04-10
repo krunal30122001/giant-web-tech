@@ -23,7 +23,7 @@
                         <label class="mt-2 fw-bold" for="phone"><span class="text-danger">*</span> Phone Number</label>
                         <input id="phone" v-model="formData.phone" type="text" name="phone" autocomplete="tel"
                             :class="['form-control', 'rounded-0', 'bg-transparent', errorClass('phone')]"
-                            placeholder="Phone Number" @input="formatPhoneNumber" maxlength="14" />
+                            placeholder="Phone Number" @input="formatPhoneNumber" maxlength="12" />
                         <p class="error-m mt-1" v-if="errors.phone">{{ errors.phone }}</p>
 
                         <label class="mt-2 fw-bold" for="email"><span class="text-danger">*</span> Email Address</label>
@@ -154,7 +154,11 @@ export default {
                 visible.value = false;
             }, 5000);
         }
-        
+
+        function cleanPhoneNumber(phone){
+            return phone.replace(/[^0-9]/g, '');
+        }
+
         function validateForm() {
             errors.value = {};
 
@@ -176,8 +180,8 @@ export default {
             const cleanedPhone = cleanPhoneNumber(formData.value.phone);
             if (!cleanedPhone) {
                 errors.value.phone = 'Phone number is required';
-            } else if (cleanedPhone.length < 9) {
-                errors.value.phone = 'Phone number must be at least 9 digits.';
+            } else if (cleanedPhone.length !== 9) {
+                errors.value.phone = 'Phone number must be exactly 9 digits';
             }
 
             // Validate Email Address
@@ -194,55 +198,47 @@ export default {
                 errors.value.description = 'Description must be at least 5 characters long';
             }
 
-            // // Validate File Upload
-            // if (!selectedFile.value) {
-            //     errors.value.image = 'Please upload an image';
-            // }
+            // Validate File Upload
+            if (!selectedFile.value) {
+                errors.value.image = 'Please upload an image';
+            }
 
             // Return true if no errors, otherwise false
             return Object.keys(errors.value).length === 0;
         }
 
-        // Format Phone Number (U.S. format) with Smooth Backspace Support
+        // Format Phone Number
         function formatPhoneNumber() {
             let cleanedPhone = cleanPhoneNumber(formData.value.phone);
-            let formattedPhone = '';
 
-            // Allow full erasure
-            if (cleanedPhone.length === 0) {
-                formData.value.phone = '';
-                return;
+            if (cleanedPhone.length > 9) {
+                cleanedPhone = cleanedPhone.slice(0, 9);
             }
 
-            // Ensure only 10 digits are considered
-            cleanedPhone = cleanedPhone.slice(0, 10);
-
-            // Apply formatting as user types
-            if (cleanedPhone.length > 0) formattedPhone += '(' + cleanedPhone.slice(0, 3);
-            if (cleanedPhone.length > 3) formattedPhone += ') ' + cleanedPhone.slice(3, 6);
-            if (cleanedPhone.length > 6) formattedPhone += '-' + cleanedPhone.slice(6);
-
-            formData.value.phone = formattedPhone;
+            if (cleanedPhone.length > 0) {
+                const parts = [
+                    cleanedPhone[0],
+                    cleanedPhone.slice(1, 4),
+                    cleanedPhone.slice(4, 7),
+                    cleanedPhone.slice(7),
+                ].filter(Boolean);
+                formData.value.phone = parts.join('-');
+            } else {
+                formData.value.phone = '';
+            }
 
             validatePhoneNumber();
         }
 
-        // Validate Phone Number (U.S. 10-Digit Format)
         function validatePhoneNumber() {
             const cleanedPhone = cleanPhoneNumber(formData.value.phone);
-
             if (!cleanedPhone) {
                 errors.value.phone = 'Phone number is required';
-            } else if (cleanedPhone.length !== 10) {
-                errors.value.phone = 'Phone number must be exactly 10 digits';
+            } else if (cleanedPhone.length !== 9) {
+                errors.value.phone = 'Phone number must be exactly 9 digits';
             } else {
                 errors.value.phone = '';
             }
-        }
-
-        // Helper Function to Remove Non-Numeric Characters
-        function cleanPhoneNumber(phone) {
-            return phone.replace(/\D/g, ''); // Remove all non-numeric characters
         }
 
         function clearError(field) {
@@ -259,9 +255,7 @@ export default {
                 Object.entries(formData.value).forEach(([key, value]) => {
                     formDataObj.append(key, value);
                 });
-                if (selectedFile.value) {
-                    formDataObj.append('image', selectedFile.value);
-                }
+                formDataObj.append('image', selectedFile.value);
                 formDataObj.append('campaign', campaign.value.short_url);
 
                 try {

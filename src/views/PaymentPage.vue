@@ -27,8 +27,8 @@
                                     <div class="prod-container overlay-section">
                                         <img :src="item.logo_image" alt="Product Image"
                                             class="img-fluid w-100 overlay-image">
-                                            <div v-if="isLogoAllowed && item?.productDescription?.toLowerCase().includes('logo')">
-                                            <div class="overlay-text" :style="{ top: '75%' }">
+                                        <div v-if="isLogoAllowed && item?.productDescription?.toLowerCase().includes('logo')">
+                                            <div class="overlay-text" :style="{ top: '70%' }">
                                                 <p class="m-0" v-for="n in item.max_lines" :key="n">
                                                     <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                                     <span v-else>&nbsp;</span>
@@ -36,7 +36,7 @@
                                             </div>
                                         </div>
                                         <div v-else>
-                                            <div class="overlay-text" :style="{ top: item.productDescription === '8x8 Additional McCovey Keepsake Brick' ? '60%' : '53%' }">
+                                            <div class="overlay-text" :style="{ top: '50%' }">
                                                 <p class="m-0" v-for="n in item.max_lines" :key="n">
                                                     <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                                     <span v-else>&nbsp;</span>
@@ -51,10 +51,10 @@
                                         <div class="col-sm-3 col-3 text-center custom-title fw-medium">QTY</div>
                                         <div class="col-sm-3 col-3 text-end custom-title fw-medium">SUBTOTAL</div>
                                     </div>
-                                    <div class="row" v-if="item?.item_id != Object.keys(item?.children)[0]">
-                                        <div class="col-7">{{ item.productDescription }}</div>
+                                    <div class="row">
+                                        <div class="col-7">{{ item.item_id === 100145 ? "DONATION" : item.productDescription }}</div>
                                         <div class="col-1 text-center">{{ item.qty }}</div>
-                                        <div class="col-4 text-end">{{ formatPrice(item.productPrice) }}</div>
+                                        <div class="col-4 text-end">{{ item.item_id === 100145 ? formatPrice(item.donationPrice) : formatPrice(item.productPrice) }}</div>
                                     </div>
                                     <div class="row"
                                         v-for="child in item.childItems.filter(child => child.quantity > 0)"
@@ -215,10 +215,9 @@ export default {
 
         const campaign = computed(() => campaignStore.campaign);
         const campaig_short_url_name = campaign.value.short_url;
-        const isLogoAllowed = computed(() => campaignStore.multilogoAllowed);
-
         const authorize = campaignStore.campaign.options.payment_type.authorize_payment_environment;
         const quantum = campaignStore.campaign.options.payment_type.quantum_payment_environment;
+        const isLogoAllowed = computed(() => campaignStore.multilogoAllowed);
 
         const cartItems = computed(() => cartStore.cartItems);
         const gateway = ref({
@@ -279,32 +278,32 @@ export default {
         });
 
         onMounted(() => {
-            window.addEventListener('message', (event) => {
-                if (event.origin !== 'https://apps.frsfulfillment.com') {
-                console.warn('Untrusted message origin:', event.origin);
-                return;
-                }
+        window.addEventListener('message', (event) => {
+            if (event.origin !== 'https://frsdevsite.com') {
+            console.warn('Untrusted message origin:', event.origin);
+            return;
+            }
 
-                const { event: eventType, data } = event.data;
+            const { event: eventType, data } = event.data;
 
-                if (eventType === 'payment-result') {
-                if (data.result === 'APPROVED') {
-                    router.push({ path: '/confirmation' });
-                } else if (data.result === 'DECLINED') {
-                    const removeItemModal = new bootstrap.Modal(document.getElementById('removeItemModal'));
-                    removeItemModal.show();
-                    // Add modal hide event listener
-                    const modalElement = document.getElementById('removeItemModal');
-                    modalElement.addEventListener('hidden.bs.modal', () => {
-                    refreshIframe();
-                    });
-                } else {
-                    console.log('Unhandled payment status:', data);
-                }
-                } else {
-                console.warn('Unhandled event type:', eventType);
-                }
-            });
+            if (eventType === 'payment-result') {
+            if (data.result === 'APPROVED') {
+                router.push({ path: '/confirmation' });
+            } else if (data.result === 'DECLINED') {
+                const removeItemModal = new bootstrap.Modal(document.getElementById('removeItemModal'));
+                removeItemModal.show();
+                // Add modal hide event listener
+                const modalElement = document.getElementById('removeItemModal');
+                modalElement.addEventListener('hidden.bs.modal', () => {
+                refreshIframe();
+                });
+            } else {
+                console.log('Unhandled payment status:', data);
+            }
+            } else {
+            console.warn('Unhandled event type:', eventType);
+            }
+        });
         });
 
         const finalTotal = computed(() => subTotal.value + convenienceAmount.value + salesTaxAmount.value - discountAmount);
@@ -392,7 +391,7 @@ export default {
 
             try {
                 const selectedAddress = addressStore.addresses[0];
-                const endpoint = 'https://apps.frsfulfillment.com/api/authorize/payment';
+                const endpoint = 'https://frsdevsite.com/api/authorize/payment';
                 const paymentData = {
                     cardNumber: cardNumber,
                     expiryDate: expiryDate,
@@ -410,7 +409,7 @@ export default {
                     state: selectedAddress.state || '',
                     zip: selectedAddress.postal_code || '',
                     country: selectedAddress.country || '',
-                    email: selectedAddress.email || '',
+                    email: selectedAddress.email || 'vishal.vaghari@imobiledesigns.com',
                     campaig_short_url_name : campaig_short_url_name || ''
                 };
 
@@ -540,6 +539,7 @@ export default {
         }
 
         return {
+            isLogoAllowed,
             cartItems,
             paymentData,
             paymentErrors,
@@ -572,7 +572,6 @@ export default {
             iframeKey,
             gateway,
             authorize,
-            isLogoAllowed,
             quantum,
         };
     },

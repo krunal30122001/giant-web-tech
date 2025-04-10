@@ -57,12 +57,11 @@ export default {
 <style scoped>
 .container {
     max-width: 700px;
-    min-height: calc(100vh - 156px);
-
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0px 0 0px 0;
+    padding: 300px 0 250px 0;
 }
 .h-box {
     position: relative;
@@ -89,10 +88,10 @@ export default {
 
 @media (min-width: 315px) and (max-width: 426px) {
     h3{
-        font-size: 30px !important;
+        font-size: 40px !important;
     }
     h4{
-        font-size: 26px !important;
+        font-size: 40px !important;
     }
 }
 
@@ -101,5 +100,4 @@ export default {
         margin: 0 15px;
     }
 }
-
 </style>

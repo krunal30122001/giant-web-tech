@@ -33,7 +33,7 @@
                     <img :src="selectedProductImage" alt="Product Image" class="img-fluid overlay-image" />
                     <!-- Inscription Text -->
                     <div v-if="isLogoAllowed && product?.description?.toLowerCase().includes('logo')">
-                        <div class="overlay-text" :style="{ top: '75%' }">
+                        <div class="overlay-text" :style="{ top: '70%' }">
                             <h2 v-for="n in cartItem?.max_lines" :key="n">
                                 <span v-if="lines[n - 1]">{{ lines[n - 1] }}</span>
                                 <span v-else><br /></span>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <div class="overlay-text" :style="{ top: '53%' }">
+                        <div class="overlay-text" :style="{ top: '50%' }">
                             <h2 v-for="n in cartItem?.max_lines" :key="n">
                                 <span v-if="lines[n - 1]">{{ lines[n - 1] }}</span>
                                 <span v-else><br /></span>
@@ -339,7 +339,7 @@ export default {
         formatValue(value) {
             return value.replace(/\n/g, '<br>');
         }
-    }
+    },
 };
 </script>
 

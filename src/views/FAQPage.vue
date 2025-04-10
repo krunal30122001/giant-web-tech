@@ -31,7 +31,7 @@
             <div class="accordion-item border-0" v-for="(faq, index) in groupedFaqs[currentSection]" :key="faq.id"
               :class="{ 'border-bottom border-dark-subtle': index !== 0 }">
               <template v-if="faq.question || faq.answer">
-                <h2 class="accordion-header" :id="'heading' + faq.id">
+                <h2 class="accordion-header " :id="'heading' + faq.id">
                   <button
                     class="accordion-button sub-header-font py-3 px-0 bg-transparent text-body border-0 shadow-none"
                     :class="{ collapsed: !isExpanded(faq.id) }" type="button" data-bs-toggle="collapse"
@@ -40,24 +40,18 @@
                     <strong v-if="faq.question">{{ faq.question }}</strong>
                   </button>
                 </h2>
-                
-                <!-- Ensure accordion-collapse is properly structured -->
                 <div :id="'collapse' + faq.id" class="accordion-collapse collapse" :class="{ show: isExpanded(faq.id) }"
                   :aria-labelledby="'heading' + faq.id" data-bs-parent="#faqAccordion">
                   <div class="accordion-body border-0 py-0 px-0">
+                    <!-- <p v-if="faq.answer">{{ faq.answer }}</p> -->
                     <p v-if="faq.answer">
-                      <a v-if="index === 1 && currentSection === Object.keys(groupedFaqs)[0]" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#inspirationModal" 
-                        class="text-dark me-1" 
-                        style="cursor: pointer;">
-                        Click here
-                      </a>
-                      <span v-html="faq.answer"></span>
+                      <a v-if="index === 1 && currentSection === Object.keys(groupedFaqs)[0]" data-bs-toggle="modal"
+                        data-bs-target="#inspirationModal" class="text-dark me-1" style="cursor: pointer;">Click
+                        here</a>
+                      {{ faq.answer }}
                     </p>
                   </div>
                 </div>
-
               </template>
             </div>
           </div>

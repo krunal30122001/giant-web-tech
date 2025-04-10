@@ -10,6 +10,7 @@ export const usePaymentStore = defineStore("paymentStore", {
 
   actions: {
     async processPayment(response) {
+      console.log("Processing payment response:", response);
       if (response.success) {
         try {
           this.isLoading = true;
@@ -25,7 +26,6 @@ export const usePaymentStore = defineStore("paymentStore", {
             approvedUrl: response.quantum.approved,
             declinedUrl: response.quantum.declined,
           };
-
         } catch (error) {
           console.error("Error processing payment:", error);
           this.error = error.message || "Failed to process payment";

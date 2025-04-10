@@ -99,7 +99,7 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <div class="overlay-text" :style="{ top: item.productDescription === '8x8 Additional McCovey Keepsake Brick' ? '60%' : '53%' }">
+                                <div class="overlay-text" :style="{ top: '50%' }">
                                     <p class="m-0" v-for="n in item.max_lines" :key="n">
                                         <span v-if="item.lines?.[n - 1]">{{ item.lines[n - 1] }}</span>
                                         <span v-else>&nbsp;</span>
@@ -117,7 +117,7 @@
                             <div class="col-sm-6 col-6 custom-title fw-medium">Shipping Address (If Applicable)</div>
                         </div>
 
-                        <div class="row mb-2" v-if="item?.item_id != Object.keys(item?.children)[0]">
+                        <div class="row mb-2">
                             <div class="col-1">
                                 <strong>{{ item.qty || 1 }}</strong>
                             </div>
@@ -532,14 +532,13 @@ export default {
 };
 </script>
 
-<style scoped>
-/* @media print {
+<style>
+@media print {
     body * {
         visibility: hidden !important;         
         background: none !important;   
         padding: 0px !important;
         margin: 0px !important;
-        color: inherit !important;  
     }
    
     .printable-receipt,
@@ -555,7 +554,7 @@ export default {
         padding: 0px !important;
         margin: 0px !important;
     }
-} */
+}
 
 .form-control {
     font-size: 15px;
@@ -653,7 +652,7 @@ table {
 
 @media (min-width: 1401px) {
     .overlay-text p {
-        font-size: small !important;
+        font-size: small;
     }
 }
 </style>

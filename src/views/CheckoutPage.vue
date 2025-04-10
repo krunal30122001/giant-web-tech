@@ -26,8 +26,9 @@
                                     <div class="prod-container overlay-section">
                                         <img :src="item.logo_image" alt="Product Image"
                                             class="img-fluid w-100 overlay-image">
-                                            <div v-if="isLogoAllowed && item?.productDescription?.toLowerCase().includes('logo')">
-                                            <div class="overlay-text" :style="{ top: '75%' }">
+                                        <!-- <div v-if="item.options.logo.length == 0"> -->
+                                        <div v-if="isLogoAllowed && item?.productDescription?.toLowerCase().includes('logo')">
+                                            <div class="overlay-text" :style="{ top: '70%' }">
                                                 <p class="m-0" v-for="n in item.max_lines" :key="n">
                                                     <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                                     <span v-else>&nbsp;</span>
@@ -35,19 +36,12 @@
                                             </div>
                                         </div>
                                         <div v-else>
-                                            <!-- <div class="overlay-text" :style="{ top: '53%' }">
-                                                <p class="m-0" v-for="n in item.max_lines" :key="n">
-                                                    <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
-                                                    <span v-else>&nbsp;</span>
-                                                </p>
-                                            </div> -->
-                                            <div class="overlay-text" :style="{ top: item.productDescription === '8x8 Additional McCovey Keepsake Brick' ? '60%' : '53%' }">
+                                            <div class="overlay-text" :style="{ top: '50%' }">
                                                 <p class="m-0" v-for="n in item.max_lines" :key="n">
                                                     <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
                                                     <span v-else>&nbsp;</span>
                                                 </p>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -57,10 +51,10 @@
                                         <div class="col-sm-3 col-3 text-center custom-title fw-medium">QTY</div>
                                         <div class="col-sm-3 col-3 text-end custom-title fw-medium">SUBTOTAL</div>
                                     </div>
-                                    <div class="row" v-if="item?.item_id != Object.keys(item?.children)[0]" >
-                                        <div class="col-7">{{ item.productDescription }}</div>
+                                    <div class="row">
+                                        <div class="col-7">{{ item.item_id === 100145 ? "DONATION" : item.productDescription }}</div>
                                         <div class="col-1 text-center">{{ item.qty }}</div>
-                                        <div class="col-4 text-end">{{ formatPrice(item.productPrice) }}</div>
+                                        <div class="col-4 text-end">{{ item.item_id === 100145 ? formatPrice(item.donationPrice) : formatPrice(item.productPrice) }}</div>
                                     </div>
                                     <!-- <div class="row" v-for="child in item.childItems" :key="child.itemId"> -->
                                     <div class="row"
@@ -547,7 +541,7 @@
                                 <!-- First Product Row -->
                                 <!-- <div v-for="(item) in cartItems" :key="item.productId" class="row py-3"> -->
                                     <div v-for="(item, itemIndex) in cartItems" :key="`${item.item_id}-${itemIndex}`" class="row py-3">
-                                    <!-- {{  item?.productDescription }} -->
+
                                     <div class="col-sm-3">
                                         <div class="border-bottom border-dark mb-3 py-2 d-block d-sm-none fw-medium">
                                             PRODUCT
@@ -555,8 +549,9 @@
                                         <div class="prod-container overlay-section">
                                             <img :src="item.logo_image" class="img-fluid overlay-image"
                                                 alt="Product Image">
+                                            <!-- <div v-if="item.options.logo.length == 0"> -->
                                                 <div v-if="isLogoAllowed && item?.productDescription?.toLowerCase().includes('logo')">
-                                                <div class="overlay-text" :style="{ top: '75%' }">
+                                                <div class="overlay-text" :style="{ top: '70%' }">
                                                     <p class="m-0 overlay-custom-text" v-for="n in item.max_lines"
                                                         :key="n">
                                                         <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
@@ -565,7 +560,7 @@
                                                 </div>
                                             </div>
                                             <div v-else>
-                                                <div class="overlay-text" :style="{ top: '53%' }">
+                                                <div class="overlay-text" :style="{ top: '50%' }">
                                                     <p class="m-0 overlay-custom-text" v-for="n in item.max_lines"
                                                         :key="n">
                                                         <span v-if="item.lines[n - 1]">{{ item.lines[n - 1] }}</span>
@@ -691,7 +686,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useCartStore } from '@/store/cart';
 import { useCampaignStore } from '@/store/campaign';
 import { useAddressStore } from '@/store/address';
@@ -868,15 +863,6 @@ export default {
             selectedCheckoutCountry.value = selectedShippingCountry.value = Object.keys(countries.value)[0];
             checkoutData.value.country = shippingData.value.country = selectedCheckoutCountry.value;
         }
-
-        // Automatically select country if only one is available
-        onMounted(() => {
-            if (countries.value && Object.keys(countries.value).length === 1) {
-                const onlyCountry = Object.keys(countries.value)[0];
-                selectedCheckoutCountry.value = onlyCountry;
-                selectedShippingCountry.value = onlyCountry;
-            }
-        });
 
         // Validation helpers
         const validationHelpers = {
@@ -1696,7 +1682,7 @@ export default {
                 }
             })();
 
-            const { how_you_heard, buying_as, affiliate_code ,addition_options , unlim_id_number , other_value } = cartStore.marketing;
+            const { emailAssociated, donatingOption, partner_code, how_you_heard, buying_as, affiliate_code } = cartStore.marketing;
 
             const shipItemTo = cartItems.value.reduce((acc, item, itemIndex) => {
                 // Process part items
@@ -1820,11 +1806,12 @@ export default {
                     options: [],
                 },
                 marketing: {
+                    emailAssociated: emailAssociated || '',
+                    donatingOption: donatingOption || '',
+                    partner_code: partner_code || '',
                     how_you_heard: how_you_heard || '',
                     buying_as: buying_as.length ? buying_as : [],
                     affiliate_code: affiliate_code || '',
-                    addition_options : (addition_options === 'Other') ? other_value : (addition_options != null ? addition_options : ''),
-                    unlim_id_number: unlim_id_number || '',
                 },
                 items: cartItems.value.map((item) => ({
                     item_id: item.item_id,
@@ -1867,9 +1854,8 @@ export default {
                 await handleShippingChange()
                 
                 if (validateCheckoutForm()) {
-                    console.log(prepareResponse() , 'prepareResponse()')
                 const response = await addressStore.OrderInvoice(prepareResponse())
-
+                    
                 if (response.success) {
                     await paymentStore.processPayment(response)
                     router.push('/payment')
@@ -1912,6 +1898,7 @@ export default {
             isPromoCodeAllowed,
             promoCodeClass,
             // BILLING
+            isLogoAllowed,
             shippingData,
             shippingErrors,
             errorshippingClass,
@@ -1960,7 +1947,6 @@ export default {
             handleClose,
             isAddressValid,  
             isLoading,      
-            isLogoAllowed,
         };
     },
 };
