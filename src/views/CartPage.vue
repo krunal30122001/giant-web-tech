@@ -395,13 +395,14 @@ input:focus {
     box-shadow: none;
 }
 
+
 @media (max-width: 320px) {
     .box {
         margin: 0 15px;
     }
 
     .overlay-text p {
-        font-size: x-small !important;
+        font-size: 9px !important;
     }
 }
 
@@ -416,7 +417,7 @@ input:focus {
     }
 
     .overlay-text p {
-        font-size: small !important;
+        font-size: 11px !important;
     }
 }
 
@@ -447,13 +448,14 @@ input:focus {
 
 @media (min-width: 768px) and (max-width: 991px) {
     .overlay-text p {
-        font-size: 7px;
+        font-size: 6px !important;
     }
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
     .overlay-text p {
-        font-size: x-small !important;
+        /* font-size: x-small !important; */
+        font-size: 9px !important;
     }
 }
 

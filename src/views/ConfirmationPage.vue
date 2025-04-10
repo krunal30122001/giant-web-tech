@@ -532,7 +532,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @media print {
     body * {
         visibility: hidden !important;         
@@ -640,19 +640,19 @@ table {
 @media (min-width: 992px) and (max-width: 1200px) {
 
     .overlay-text p {
-        font-size: xx-small;
+        font-size: xx-small !important;
     }
 }
 
 @media (min-width: 1201px) and (max-width: 1400px) {
     .overlay-text p {
-        font-size: x-small;
+        font-size: x-small !important;
     }
 }
 
 @media (min-width: 1401px) {
     .overlay-text p {
-        font-size: small;
+        font-size: small !important;
     }
 }
 </style>

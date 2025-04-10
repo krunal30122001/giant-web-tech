@@ -279,7 +279,7 @@ export default {
 
         onMounted(() => {
         window.addEventListener('message', (event) => {
-            if (event.origin !== 'https://frsdevsite.com') {
+            if (event.origin !== 'https://apps.frsfulfillment.com') {
             console.warn('Untrusted message origin:', event.origin);
             return;
             }
@@ -391,7 +391,7 @@ export default {
 
             try {
                 const selectedAddress = addressStore.addresses[0];
-                const endpoint = 'https://frsdevsite.com/api/authorize/payment';
+                const endpoint = 'https://apps.frsfulfillment.com/api/authorize/payment';
                 const paymentData = {
                     cardNumber: cardNumber,
                     expiryDate: expiryDate,
@@ -621,7 +621,7 @@ input:focus,
         margin: 0 15px;
     }
 
-    .overlay-text {
+    .overlay-text p {
         font-size: x-small !important;
     }
 
@@ -635,7 +635,7 @@ input:focus,
         margin: 0 15px;
     }
 
-    .overlay-text {
+    .overlay-text p {
         font-size: small !important;
     }
 
@@ -658,7 +658,7 @@ input:focus,
         width: 100%;
     }
 
-    .overlay-text {
+    .overlay-text p {
         font-size: large !important;
     }
 }
@@ -672,7 +672,7 @@ input:focus,
         margin: 0 15px;
     }
 
-    .overlay-text {
+    .overlay-text p {
         font-size: 6px !important;
     }
 }
@@ -682,25 +682,25 @@ input:focus,
         border-right: none !important;
     }
 
-    .overlay-text {
+    .overlay-text p {
         font-size: xx-small !important;
     }
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-    .overlay-text {
-        font-size: 6px !important;
+    .overlay-text p {
+        font-size: 5px !important;
     }
 }
 
 @media (min-width: 1201px) and (max-width: 1400px) {
-    .overlay-text {
-        font-size: 7px;
+    .overlay-text p {
+        font-size: 7px !important;
     }
 }
 
 @media (min-width: 1401px) {
-    .overlay-text {
+    .overlay-text p {
         font-size: 8px !important;
     }
 }

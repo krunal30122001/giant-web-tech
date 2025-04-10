@@ -2034,8 +2034,9 @@ body.loading {
         margin: 0 15px;
     }
 
-    .overlay-text {
-        font-size: x-small !important;
+    .overlay-text p {
+        /* font-size: x-small !important; */
+        font-size: 9px !important;
     }
 
     .no-border-end {
@@ -2048,8 +2049,9 @@ body.loading {
         margin: 0 15px;
     }
 
-    .overlay-text {
-        font-size: small !important;
+    .overlay-text p {
+        /* font-size: small !important; */
+        font-size: 11px !important;
     }
 
     .no-border-end {
@@ -2085,7 +2087,7 @@ body.loading {
         margin: 0 15px;
     }
 
-    .overlay-text {
+    .overlay-text p {
         font-size: 6px !important;
     }
 
@@ -2099,7 +2101,7 @@ body.loading {
         border-right: none !important;
     }
 
-    .overlay-text {
+    .overlay-text p {
         font-size: xx-small !important;
     }
 
@@ -2109,8 +2111,8 @@ body.loading {
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-    .overlay-text {
-        font-size: 6px !important;
+    .overlay-text p {
+        font-size: 5px !important;
     }
 
     .overlay-custom-text {
@@ -2119,14 +2121,14 @@ body.loading {
 }
 
 @media (min-width: 1201px) and (max-width: 1400px) {
-    .overlay-text {
+    .overlay-text p {
         font-size: 7px !important;
     }
 }
 
 @media (min-width: 1401px) {
-    .overlay-text {
-        font-size: 7px !important;
+    .overlay-text p {
+        font-size: 8px !important;
     }
 }
 </style>
